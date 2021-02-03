@@ -1,0 +1,168 @@
+<div fxLayout="column" style="padding: 80px">
+  <form fxFlex fxLayout="column" [formGroup]="filterForm">
+    <div fxFlex fxLayoutGap="10px">
+      <mat-form-field appearance="fill">
+        <mat-label>Order</mat-label>
+        <mat-select formControlName="order">
+          <mat-option value="desc">Descending</mat-option>
+          <mat-option value="asc">Ascending</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Sort</mat-label>
+        <mat-select formControlName="sort">
+          <mat-option *ngFor="let option of sortOptions" [value]="option">{{
+            option
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Accepted</mat-label>
+        <mat-select formControlName="accepted">
+          <mat-option value="true">true</mat-option>
+          <mat-option value="false">false</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Closed</mat-label>
+        <mat-select formControlName="closed">
+          <mat-option value="true">true</mat-option>
+          <mat-option value="false">false</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Min</mat-label>
+        <input formControlName="min" matInput [matDatepicker]="picker" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div fxFlex fxLayoutGap="10px">
+      <mat-form-field appearance="fill">
+        <mat-label>Migrated</mat-label>
+        <mat-select formControlName="migrated">
+          <mat-option value="true">true</mat-option>
+          <mat-option value="false">false</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Notice</mat-label>
+        <mat-select formControlName="notice">
+          <mat-option value="true">true</mat-option>
+          <mat-option value="false">false</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Wiki</mat-label>
+        <mat-select formControlName="wiki">
+          <mat-option value="true">true</mat-option>
+          <mat-option value="false">false</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Max</mat-label>
+        <input formControlName="max" matInput [matDatepicker]="picker1" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>From Date</mat-label>
+        <input formControlName="fromdate" matInput [matDatepicker]="picker2" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div fxFlex fxLayoutGap="10px">
+      <mat-form-field appearance="fill">
+        <mat-label>To Date</mat-label>
+        <input formControlName="todate" matInput [matDatepicker]="picker3" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker3"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Answers</mat-label>
+        <input matInput formControlName="answers" type="number" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Views</mat-label>
+        <input matInput formControlName="views" type="number" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>User</mat-label>
+        <input matInput formControlName="user" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Tagged</mat-label>
+        <input matInput formControlName="tagged" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Not tagged</mat-label>
+        <input matInput formControlName="nottagged" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>URL</mat-label>
+        <input matInput formControlName="url" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field fxFlex="100" appearance="fill">
+        <mat-label>Query</mat-label>
+        <input matInput formControlName="q" />
+      </mat-form-field>
+    </div>
+  </form>
+
+  <button mat-button (click)="search()">Search</button>
+</div>
+<mat-paginator [length]="length" (page)="search()" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<div
+  fxLayout="column"
+  fxLayoutGap="40px"
+  [style.margin-left]="'100px'"
+  [style.margin-right]="'100px'"
+>
+  <mat-card *ngFor="let item of obs |async" style="padding:50px; background:lightyellow">
+    <mat-card-header>
+      <div mat-card-avatar></div>
+      <mat-card-title>{{ item.title }}</mat-card-title>
+      <mat-card-subtitle>{{ item.display_name }}</mat-card-subtitle>
+    </mat-card-header>
+    <div fxLayout="row" fxLayoutGap="50px">
+      <img
+        mat-card-image
+        [src]="item.owner.profile_image"
+        [style.height]="'100px'"
+        [style.width]="'100px'"
+        [style.border-radius]="'50%'"
+      />
+      <mat-chip-list aria-label="tags">
+        <mat-chip *ngFor="let tag of item.tags">{{ tag }}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <mat-card-content fxLayout="column">
+      <span>Owner reputation: {{ item.owner?.reputation }}</span>
+      <span>Is answered: <mat-icon *ngIf="item.is_answered">done_outline</mat-icon><mat-icon *ngIf="!item.is_answered">close</mat-icon></span>
+      <span>View Count: {{ item.view_count }}</span>
+      <span>Anwer Count: {{ item.answer_count }}</span>
+      <span>Score: {{ item.score }}</span>
+      <span>Creation Date: {{ item.creation_date |date }}</span>
+      <span>Last Activity Date: {{ item.last_activity_date |date }}</span>
+    </mat-card-content>
+    <mat-card-actions>
+      <a class="question-link" target="_blank" [href]="item.link">Go to question</a>
+    </mat-card-actions>
+  </mat-card>
+</div>
